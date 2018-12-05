@@ -1,0 +1,50 @@
+-- This file has been generated from package.yaml by hpack version 0.28.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: b69cc4992779b791ee2641e64b88ca997c368993e43600f0344f20c35a0189f9
+
+name:           adventofcode
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/h1#readme>
+homepage:       https://github.com/mihaicostin/adventofcode-2018#readme
+bug-reports:    https://github.com/mihaicostin/adventofcode-2018/issues
+author:         Mihai
+maintainer:     example@example.com
+copyright:      2018 Mihai
+license:        MIT
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+extra-source-files:
+    ChangeLog.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/mihaicostin/adventofcode-2018
+
+library
+  exposed-modules:
+      Day1
+  other-modules:
+      Paths_adventofcode
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , text
+  default-language: Haskell2010
+
+executable adventofcode-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_adventofcode
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      adventofcode
+    , base >=4.7 && <5
+    , text
+  default-language: Haskell2010
