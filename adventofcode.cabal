@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b69cc4992779b791ee2641e64b88ca997c368993e43600f0344f20c35a0189f9
+-- hash: ac1247d014a4b49aa39eff2cbbed316eec3b3a0a62009e7eb8c489d4598937cc
 
 name:           adventofcode
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 library
   exposed-modules:
       Day1
+      Day2
   other-modules:
       Paths_adventofcode
   hs-source-dirs:
