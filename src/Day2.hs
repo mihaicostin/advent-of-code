@@ -9,9 +9,6 @@ import qualified Data.Text.IO as Text
 import Data.Text.Read
 import Data.List
 
-num :: Text.Text -> Int
-num = either (error . show) fst . signed decimal
-
 -- Day 2.1 puzzle
 solveDay2_1 :: IO ()
 solveDay2_1 = do
