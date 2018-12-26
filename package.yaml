@@ -24,6 +24,8 @@ dependencies:
 - text
 - regex-posix
 - containers
+- time
+- split
 
 library:
   source-dirs: src

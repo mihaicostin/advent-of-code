@@ -1,5 +1,5 @@
 module Day3(
-        solveDay3_1,
+        solveDay3,
         ) where
 
 import System.Environment

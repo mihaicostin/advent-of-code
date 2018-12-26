@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b6b65e6f594c7cedc52b85eb5fee2f90f2cab57f1054a536a40fc48c87f36cd2
+-- hash: 07aa25cd3cf27dd90c87417bfe923a586aa3e8a95a2de8f2cff7347929401c11
 
 name:           adventofcode
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Day1
       Day2
       Day3
+      Day4
   other-modules:
       Paths_adventofcode
   hs-source-dirs:
@@ -37,7 +38,9 @@ library
       base >=4.7 && <5
     , containers
     , regex-posix
+    , split
     , text
+    , time
   default-language: Haskell2010
 
 executable adventofcode-exe
@@ -52,5 +55,7 @@ executable adventofcode-exe
     , base >=4.7 && <5
     , containers
     , regex-posix
+    , split
     , text
+    , time
   default-language: Haskell2010
