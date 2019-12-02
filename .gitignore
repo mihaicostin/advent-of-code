@@ -21,4 +21,6 @@ cabal.project.local~
 .HTF/
 .ghc.environment.*
 .idea
+*.iml
 input
+target
