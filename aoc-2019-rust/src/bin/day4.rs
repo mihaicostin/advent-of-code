@@ -11,7 +11,6 @@ fn main() {
         let mut next_digit = -1;
         let mut increasing = true;
         let mut same= false;
-        let mut digs = vec![];
         let mut same_count = 0;
 
         while number > 0 {
@@ -33,7 +32,6 @@ fn main() {
                     increasing = false;
                 }
             }
-            digs.push(digit);
             number = number / 10;
             next_digit = digit;
         }
@@ -44,7 +42,6 @@ fn main() {
 
         if same && increasing {
             count = count + 1;
-            //println!("Result index WITHOUT :\n{:?}", index);
         }
 
     }
