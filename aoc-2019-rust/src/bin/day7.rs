@@ -8,6 +8,7 @@ fn main() {
     let result = read_comma_int_array("src/bin/day7.txt");
 
     let phases = combine(vec![0,1,2,3,4]);
+//    let phases = combine(vec![5,6,7,8,9]); //part 2
     println!("Possible phases {:?} ",phases);
 
     let mut max = 0;
