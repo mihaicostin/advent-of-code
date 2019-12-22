@@ -10,8 +10,6 @@ use num::bigint::{ToBigInt, BigInt};
 use num::ToPrimitive;
 use num::Zero;
 
-//const zero : BigInt = Zero::zero();
-
 fn main() {
     let result = read_comma_int_array("src/bin/day9.txt");
 

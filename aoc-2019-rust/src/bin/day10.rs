@@ -80,12 +80,12 @@ fn main() {
     println!("SORTED all others {:?}", station_tan);
 
     let mut starting_index = 0;
-    for point in &station_tan {
+    for (idx, &point) in station_tan.iter().enumerate() {
         if point.0 == station_x && point.1 < station_y {
             println!("Starting point {:?}", point);
+            starting_index = idx;
             break;
         }
-        starting_index = starting_index + 1;
     }
 
     println!("Starting index {:?}", starting_index);
