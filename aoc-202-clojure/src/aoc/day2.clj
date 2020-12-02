@@ -2,28 +2,23 @@
   (:gen-class)
   (:require [clojure.string :as str]
             [clojure.edn :as edn]
+            [aoc.utilitybelt :as u]
             ))
 
 (def inputFile "src/aoc/day2.txt" )
-
-(defn readLines
-  [input]
-  (with-open [rdr (clojure.java.io/reader input)]
-    (reduce conj [] (line-seq rdr))
-    )
-  )
 
 (defn isValid
   [passLine]
 
   (let [[_ min max letter value] (re-matches #"(\d+)-(\d+) ([a-z]): ([a-z]+)" passLine)]
 
-    (def full (count value))
-    (def nonLetter (count (str/replace value letter "")))
-    (def letters (- full nonLetter))
+    (def pos1 (- (edn/read-string min) 1))
+    (def pos2 (- (edn/read-string max) 1))
+    (def ch (seq value))
+    (def l (first letter))
 
-    (and (<= (edn/read-string min) letters) (>= (edn/read-string max) letters))
-  )
+    (or (and (= (nth (seq value) pos1) l) (not= (nth (seq value) pos2) l))
+        (and (not= (nth (seq value) pos1) l) (= (nth (seq value) pos2) l))))
   )
 
 
@@ -31,7 +26,7 @@
   "Day 2: Password Philosophy"
   [& args]
 
-  (print (count (filter isValid (readLines inputFile))))
+  (print (count (filter isValid (u/readLines inputFile))))
 
   )
 
