@@ -1,15 +1,14 @@
 (ns aoc.day1
   (:gen-class)
   (:require [clojure.string :as str]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [aoc.utilitybelt :as u]))
 
-( defn -main
+(defn -main
   "Day 1: Report Repair"
   [& args]
 
-  (def values (slurp "src/aoc/day1.txt"))
-
-  (def input (read-string (str "[" values "]")))
+  (def input (u/readFile "src/aoc/day1.txt") )
 
   (def result (for [a input
                     b input
@@ -19,5 +18,7 @@
       y))
 
   (println result)
-
   )
+
+
+
