@@ -5,7 +5,7 @@
             [aoc.utilitybelt :as u]
             ))
 
-(def inputFile "src/aoc/day3.txt" )
+(def inputFile "src/aoc/day3.txt")
 
 
 (defn getValueAt
@@ -14,7 +14,7 @@
   )
 
 (defn printPath
-  [inputList w h ]
+  [inputList w h]
   (loop [x 0 y 0
          result []]
     (when (< y h)
@@ -26,18 +26,18 @@
       (if (<= (+ x 3) w) (recur (+ x 3) (+ y 1) result)
                          (recur (- (+ x 3) w) (+ y 1) result))
 
-    ))
+      ))
   )
 
 
 (defn path
-  [inputList w h x y]
+  [inputList w h x y sx sy]
 
   (conj
 
-    (if (< y (- h 1))
-      (if (< (+ x 3) w) (path inputList w h (+ x 3) (+ y 1))
-                         (path inputList w h (- (+ x 3) w) (+ y 1)))
+    (if (< y (- h sy))
+      (if (< (+ x sx) w) (path inputList w h (+ x sx) (+ y sy) sx sy)
+                         (path inputList w h (- (+ x sx) w) (+ y sy) sx sy))
       )
 
     (getValueAt x y w inputList)
@@ -57,11 +57,14 @@
 
   (println w h forestList)
 
-  (def slide (path forestList w h 0 0))
+  (println (* (count (filter #(= % \#) (path forestList w h 0 0 1 1)))
+              (count (filter #(= % \#) (path forestList w h 0 0 3 1)))
+              (count (filter #(= % \#) (path forestList w h 0 0 5 1)))
+              (count (filter #(= % \#) (path forestList w h 0 0 7 1)))
+              (count (filter #(= % \#) (path forestList w h 0 0 1 2)))
 
-  (print (count (filter #(= % \#) slide)))
-
+              )
+           )
   )
-
 
 
