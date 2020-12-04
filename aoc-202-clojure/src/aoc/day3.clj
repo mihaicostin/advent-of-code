@@ -13,23 +13,6 @@
   (nth values (+ x (* y w)))
   )
 
-(defn printPath
-  [inputList w h]
-  (loop [x 0 y 0
-         result []]
-    (when (< y h)
-
-      (if (= \# (getValueAt x y w inputList))
-        (conj result 0)
-        (conj result 1))
-
-      (if (<= (+ x 3) w) (recur (+ x 3) (+ y 1) result)
-                         (recur (- (+ x 3) w) (+ y 1) result))
-
-      ))
-  )
-
-
 (defn path
   [inputList w h x y sx sy]
 
