@@ -19,7 +19,7 @@
         (= head lk) min
         (= head uk) max
         )
-      (if (= head \F)
+      (if (= head lk)
         (decode tail min middle lk uk)
         (decode tail (+ middle 1) max lk uk)
         ))
@@ -35,11 +35,14 @@
   (def col (decode (seq (subs lineStr 7 10)) 0 7 \L \R) )
   (def id (+ (* row 8) col))
 
-  {:row row, :col col, :id id}
+  {:row row, :col col, :id id, :line lineStr}
 
   )
 
-
+(defn has
+  [col elem]
+  (not (= (some #{elem} col) nil))
+  )
 
 
 (defn -main
@@ -48,10 +51,12 @@
 
   (def lines (u/readLines inputFile))
 
+  (def ids (distinct (sort (map #(get (toBoardingPass %1) :id) lines))))
+
   (println
-    (reduce #(max %1 (get %2 :id))  0
-    (map toBoardingPass lines)
-    )
+    (filter
+      #(and (not (has ids (+ % 1))) (has ids (+ % 2) ))
+      ids)
     )
 
   )
