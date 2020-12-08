@@ -10,16 +10,27 @@
 
 
 (defn process
-  [instructions position processed acc]
+  [instructions position processed acc flipIndex]
 
-  (if (not (= (some #{position} processed) nil))
-    (println "found it: " acc)
+  (if (>= position (count instructions))
+    (list '1 acc)
 
-    (let [[instr arg] (str/split (nth instructions position) #" ")]
-      (case instr
-        "acc" (process instructions (+ position 1) (conj processed position) (+ acc (edn/read-string arg)))
-        "nop" (process instructions (+ position 1) (conj processed position) acc)
-        "jmp" (process instructions (+ position (edn/read-string arg)) (conj processed position) acc)
+    (if (not (= (some #{position} processed) nil))
+      (list '-1 acc)
+
+      (let [[instr arg] (str/split (nth instructions position) #" ")]
+        (if (= flipIndex position)
+          (case instr
+            "acc" (process instructions (+ position 1) (conj processed position) (+ acc (edn/read-string arg)) flipIndex)
+            "jmp" (process instructions (+ position 1) (conj processed position) acc flipIndex)
+            "nop" (process instructions (+ position (edn/read-string arg)) (conj processed position) acc flipIndex)
+            )
+          (case instr
+            "acc" (process instructions (+ position 1) (conj processed position) (+ acc (edn/read-string arg)) flipIndex)
+            "nop" (process instructions (+ position 1) (conj processed position) acc flipIndex)
+            "jmp" (process instructions (+ position (edn/read-string arg)) (conj processed position) acc flipIndex)
+            )
+          )
         )
       )
     )
@@ -31,8 +42,18 @@
   [& args]
 
   (def lines (u/readLines inputFile))
-  (println
-    (process lines 0 () 0))
+
+  (def cc (count lines))
+  (print
+    (filter
+      #(let [[head tail] %1] (= head 1))
+      (for [idx (range cc)]
+        (if (or (str/includes? (nth lines idx) "jmp") (str/includes? (nth lines idx) "nop"))
+          (process lines 0 () 0 idx)
+          '()
+          )
+        )))
+
   )
 
 
