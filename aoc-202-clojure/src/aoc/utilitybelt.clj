@@ -1,5 +1,7 @@
 (ns aoc.utilitybelt
-  (:gen-class))
+  (:gen-class)
+  (:require [clojure.set :as s]
+            ))
 
 
 (defn readFile
@@ -16,3 +18,8 @@
     (reduce conj [] (line-seq rdr))
     )
   )
+
+(defn intersect
+  [l1 l2]
+  (s/intersection (into #{} l1) (into #{} l2) )
+)
