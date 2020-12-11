@@ -35,7 +35,6 @@
                    occupied (count (filter #(= \# %) neighbours))
                    ]
 
-               ;(println "current" current [s1 s2 s3 s4 s5 s6 s7 s8] neighbours occupied)
                (case current
                  \. \.
                  \L (if (= occupied 0) \# \L)
@@ -45,7 +44,6 @@
                ))
         )
   )
-
 
 (defn process
   [input w h]
@@ -59,6 +57,66 @@
   )
 
 
+(defn getFirstMapValueAt
+  [x y w h values xFun yFun]
+
+  (loop [lx x
+         ly y]
+    (def current (getMapValueAt (xFun lx) (yFun ly) w h values))
+    (case current
+      \L \L
+      \# \#
+      nil nil
+      (recur (xFun lx) (yFun ly))
+      )
+    )
+  )
+
+(defn stepSecondPhase
+  [input w h]
+
+  (into [] (for [y (range h)
+                 x (range w)]
+             (let [current (getMapValueAt x y w h input)
+                   s1 (getFirstMapValueAt x y w h input dec dec)
+                   s2 (getFirstMapValueAt x y w h input identity dec)
+                   s3 (getFirstMapValueAt x y w h input inc dec)
+                   s4 (getFirstMapValueAt x y w h input inc identity)
+                   s5 (getFirstMapValueAt x y w h input inc inc)
+                   s6 (getFirstMapValueAt x y w h input identity inc)
+                   s7 (getFirstMapValueAt x y w h input dec inc)
+                   s8 (getFirstMapValueAt x y w h input dec identity)
+                   neighbours (filter some? [s1 s2 s3 s4 s5 s6 s7 s8])
+                   occupied (count (filter #(= \# %) neighbours))
+                   ]
+
+               (case current
+                 \. \.
+                 \L (if (= occupied 0) \# \L)
+                 \# (if (>= occupied 5) \L \#)
+                 current
+                 )
+               ))
+        )
+  )
+
+(defn processSecondPhase
+  [input w h]
+
+  (loop [seats input]
+    (def nextStage (stepSecondPhase seats w h))
+
+    (if (= seats nextStage)
+      seats
+      (recur nextStage)
+      )
+    )
+  )
+
+
+
+
+
 (defn -main
   "Day 11: Seating System"
   [& args]
@@ -69,8 +127,11 @@
 
   (def allChars (reduce #(into %1 (seq %2)) [] lines))
 
-  (def equilibrium (process allChars w h))
+  (println "part 1 - total occupied " (count (filter #(= \# %) (process allChars w h))))
 
-  (println "part 1 - total occupied " (count (filter #(= \# %) equilibrium)))
+  (println "part 2 - total occupied " (count (filter #(= \# %) (processSecondPhase allChars w h))))
+
+
+
 
   )
