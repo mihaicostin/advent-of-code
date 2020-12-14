@@ -37,6 +37,24 @@
   )
 
 
+(defn generateValues
+  [bitArray]
+
+  (if (empty? bitArray)
+    [[]]
+    (let [[head & tail] bitArray
+          other (generateValues tail)
+          ]
+      (if (= head \X)
+        (into (map #(into [ \0 ] %1 ) other) (map #(into [ \1 ] %1 ) other))
+        (map #(into [ head ] %1 ) other)
+        )
+      )
+
+    )
+  )
+
+
 (defn applyMask
   [value mask]
 
@@ -50,13 +68,22 @@
       (for [idx (range size)]
         (let [b (getValueAt binaryArray idx 0)
               m (getValueAt maskArray idx "X")]
-              (if (= m \X)
-                b
-                m)
+          (case m
+            \X \X
+            \1 \1
+            b
+            )
           )
         ))
-    (Long/parseLong (str/join (reverse resultArray)) 2)
+    (def indexes (generateValues (reverse resultArray)))
+    (map #(Long/parseLong (str/join %1) 2) indexes)
     )
+  )
+
+
+(defn writeToMemo
+  [memoMap indexes value]
+  (reduce (fn [map idx] (into map {idx value})) memoMap indexes)
   )
 
 
@@ -70,7 +97,7 @@
           ]
       (if (contains? instr :mask)
         (process tail memoMap (get instr :mask))
-        (process tail (into memoMap {(get instr :index) (applyMask (get instr :value) mask)}) mask)
+        (process tail (writeToMemo memoMap (applyMask (get instr :index) mask) (get instr :value)) mask)
         )
       )
     )
@@ -83,6 +110,8 @@
   (def lines (u/readLines inputFile))
 
   (def memo (process lines {} ""))
+
+
   (println
     (reduce (fn [s [k v]] (+ s v)) 0 memo)
     )
