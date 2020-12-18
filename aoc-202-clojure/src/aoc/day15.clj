@@ -5,32 +5,16 @@
             [clojure.string :as str]
             [clojure.math.numeric-tower :as math]))
 
-(defn findIndex
-  [history value]
-
-  (loop [values history]
-    (if (empty? values)
-      nil
-      (let [[head & tail] values]
-        (if (= value (last head))
-          (first head)
-          (recur tail)
-          )
-        )
-      )
-
-    )
-  )
-
 
 (defn nextNumber
-  [history]
+  [lastSpoken historyMap]
 
-  (let [[lastSpoken & tail] history
-        lastSeenIndex (findIndex tail (last lastSpoken))
+  (let [lastSpokenValue (first lastSpoken)
+        lastSpokenIndex (last lastSpoken)
+        lastSeenIndex (get historyMap lastSpokenValue)
         ]
     (if (some? lastSeenIndex)
-      (- (first lastSpoken) lastSeenIndex)
+      (- lastSpokenIndex lastSeenIndex)
       0
       )
     )
@@ -38,17 +22,20 @@
 
 
 (defn generate
-  [history stopAt]
+  [initialHistoryMap initialLastSpoken stopAt]
 
-  (let [lastSpoken (first history)
-        lastIndex (first lastSpoken)
-        ]
+  (loop [history initialHistoryMap
+         lastSpoken initialLastSpoken
+         ]
+    (let [lastValue (first lastSpoken)
+          lastIndex (last lastSpoken)
+          ]
 
-    (if (= lastIndex stopAt)
-      lastSpoken
-      (generate (conj history [(inc lastIndex) (nextNumber history)]) stopAt)
+      (if (= lastIndex stopAt)
+        lastSpoken
+        (recur (into history {lastValue lastIndex}) [(nextNumber lastSpoken history) (inc lastIndex)] )
+        )
       )
-
     )
 
   )
@@ -60,12 +47,16 @@
   [& args]
 
   (def input [10 16 6 0 1 17])
-  (def indexedInput (map vector (range (count input)) input))
+  (def indexedInput (map vector (range (dec (count input))) input))
+
+
+  (def historyMap (reduce (fn [m el] (into m {(last el) (first el)})) {} indexedInput))
+
+
   (def history (reverse indexedInput))
 
-  (println
-    (generate history (dec 2020))
-    )
+  (println (generate historyMap [(last input) (dec (count input))] (dec 30000000)))
+
 
   )
 
