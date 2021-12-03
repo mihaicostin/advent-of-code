@@ -33,4 +33,3 @@ with open("day2.txt") as f:
         if com == "up":
             aim -= amount
     print(depth * horizontal)
-
