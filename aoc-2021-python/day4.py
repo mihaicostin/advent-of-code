@@ -52,5 +52,21 @@ def run_bingo(numbers, boards):
                 result = sum_unmarked(board) * bingo_nr
                 return result
 
-
 print(run_bingo(numbers, boards))
+
+#part 2
+
+def run_bingo_last(numbers, boards):
+    board_idx = []
+    result = 0
+    for bingo_nr in numbers:
+        for b, board in enumerate(boards):
+            if b not in board_idx:
+                bingo = mark_number(board, bingo_nr)
+                if bingo:
+                    result = sum_unmarked(board) * bingo_nr
+                    board_idx.append(b)
+    return result
+
+
+print(run_bingo_last(numbers, boards))
