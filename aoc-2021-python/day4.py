@@ -15,9 +15,6 @@ with open("day4.txt") as f:
             if current_board:
                 boards.append(current_board)
                 current_board = []
-    # for ly, line in enumerate(lines):
-    #     for rx, ch in enumerate(line.strip()):
-    #         readings[ly][rx] = int(ch)
 
 
 def check_marked(array):
@@ -52,10 +49,11 @@ def run_bingo(numbers, boards):
                 result = sum_unmarked(board) * bingo_nr
                 return result
 
+
 print(run_bingo(numbers, boards))
 
-#part 2
 
+# part 2
 def run_bingo_last(numbers, boards):
     board_idx = []
     result = 0
