@@ -15,24 +15,67 @@ with open("day5.txt") as f:
         max_size = max(max_size, sx, ex, sy, ey)
         lines.append([sx, sy, ex, ey])
 
-print(max_size)
-print(lines)
 surface = np.zeros((max_size + 1, max_size + 1))
 
 intersection_points = 0
 for line in lines:
-    if line[0] == line[2]:
+    [x1, y1, x2, y2] = line
+    if x1 == x2:
         # same X, vertical line, inc all points on the line
-        for y in range(min(line[1], line[3]), max(line[1], line[3]) + 1):
-            surface[line[0]][y] += 1
-            if surface[line[0]][y] == 2:
+        for y in range(min(y1, y2), max(y1, y2) + 1):
+            surface[x1][y] += 1
+            if surface[x1][y] == 2:
                 intersection_points += 1
     else:
-        if line[1] == line[3]:
+        if y1 == y2:
             # same Y, horizontal line
-            for x in range(min(line[0], line[2]), max(line[0], line[2]) + 1):
-                surface[x][line[1]] += 1
-                if surface[x][line[1]] == 2:
+            for x in range(min(x1, x2), max(x1, x2) + 1):
+                surface[x][y1] += 1
+                if surface[x][y1] == 2:
                     intersection_points += 1
 
-print(intersection_points)
+print("part 1", intersection_points)
+
+# part 2
+surface = np.zeros((max_size + 1, max_size + 1))
+intersection_points = 0
+
+
+def points(x1, y1, x2, y2):
+    result = []
+    if x2 < x1:
+        return points(x2, y2, x1, y1)
+    else:
+        y = y1
+        for x in range(x1, x2 + 1):
+            result.append([x, y])
+            if y1 < y2:
+                y = y + 1
+            else:
+                y = y - 1
+        return result
+
+
+for line in lines:
+    [x1, y1, x2, y2] = line
+    if x1 == x2:
+        # same X, vertical line, inc all points on the line
+        for y in range(min(y1, y2), max(y1, y2) + 1):
+            surface[x1][y] += 1
+            if surface[x1][y] == 2:
+                intersection_points += 1
+    else:
+        if y1 == y2:
+            # same Y, horizontal line
+            for x in range(min(x1, x2), max(x1, x2) + 1):
+                surface[x][y1] += 1
+                if surface[x][y1] == 2:
+                    intersection_points += 1
+        else:
+            # diagonal line
+            for p in points(x1, y1, x2, y2):
+                surface[p[0]][p[1]] += 1
+                if surface[p[0]][p[1]] == 2:
+                    intersection_points += 1
+
+print("part 2", intersection_points)
