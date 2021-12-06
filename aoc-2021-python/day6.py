@@ -1,22 +1,28 @@
+# fish = [3,4,3,1,2]
+# days = 18
 
-days = 80
+# part 1
+# days = 80
+
+# part 2
+days = 256
+schools = [0 for x in range(9)]
+
 with open("day6.txt") as f:
     file_lines = f.readlines()
     numbers_str = file_lines[0].split(",")
     fish = list(map(lambda x: int(x.strip()), numbers_str))
-
-# fish = [3,4,3,1,2]
-# days = 18
+    for x in fish:
+        schools[x] += 1
 
 new_fish = []
 for day in range(days):
-    for idx, f in enumerate(fish):
-        if f == 0:
-            fish[idx] = 6
-            new_fish.append(8)
-        else:
-            fish[idx] = f - 1
-    fish = fish + new_fish
-    new_fish = []
+    new_school = [0 for x in range(9)]
+    for d in range(0, 8):
+        new_school[d] = schools[d + 1]
+    new_school[6] += schools[0]
+    new_school[8] += schools[0]
+    schools = new_school
 
-print(len(fish))
+print(schools)
+print(sum(schools))
