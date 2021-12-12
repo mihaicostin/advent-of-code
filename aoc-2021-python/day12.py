@@ -29,9 +29,37 @@ def find_paths(g, visited, current):
         all_paths = all_paths + non_empty_paths
     return all_paths
 
-
-# for n in graph.neighbors("start"):
-#     print(n)
-
 paths = find_paths(graph, [], "start")
 print(len(paths))
+
+
+def find_paths_second(g, visited, single, visited_second, current):
+
+    if current == "end":
+        return [visited + [current]]
+
+    if current in visited and current.islower():
+        if current == single:
+            if visited_second:
+                return []
+            else:
+                visited_second = True
+        else:
+            return []
+
+    all_paths = []
+    for node in g.neighbors(current):
+        paths = find_paths_second(g, visited + [current], single, visited_second, node)
+        non_empty_paths = list(filter(lambda p: len(p) != 0, paths))
+        all_paths = all_paths + non_empty_paths
+    return all_paths
+
+
+total_paths = []
+for node in graph.nodes:
+    if node.islower() and node != 'start' and node != 'end':
+        p = find_paths_second(graph, [], node, False, "start")
+        str_paths = list(map(lambda x: "|".join(x), p))
+        total_paths = total_paths + str_paths
+
+print(len(set(total_paths)))
